@@ -15,6 +15,7 @@ class GoogleMapsIntegration extends StatefulWidget {
 class _GoogleMapsIntegration extends State<GoogleMapsIntegration>{
 
   late GoogleMapController _mapController;
+
   Map<String, Marker> _markers = {};
 
   //ADD Marker Function
@@ -39,6 +40,7 @@ class _GoogleMapsIntegration extends State<GoogleMapsIntegration>{
 TextEditingController _Latitudecontroller = TextEditingController();
 TextEditingController _longitudecontroller = TextEditingController();
 
+//Camera position variable
 final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12);
                   
 // late LatLng searchlocation = LatLng(
@@ -66,6 +68,7 @@ final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12)
                 );
               
               currentlocation = searchlocation;
+              
               print('Search location: $searchlocation');
               
               print('Current Location: $currentlocation');
@@ -74,10 +77,9 @@ final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12)
               
 
               setState(() {
-               // currentlocation = searchlocation;
+               
                _mapController.animateCamera(CameraUpdate.newLatLng(currentlocation));
-              //  _Latitudecontroller.clear();
-              //  _longitudecontroller.clear();
+              
 
               });
 
@@ -89,7 +91,7 @@ final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12)
               width: double.infinity,
               height: 400,
               child: GoogleMap(initialCameraPosition:
-                _position,
+                     _position,
                 // CameraPosition(
                   
                 //   // target: currentlocation,

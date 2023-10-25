@@ -1,4 +1,5 @@
 import 'package:first_app/API%20work/google_maps.dart';
+import 'package:first_app/API%20work/markerAt_center.dart';
 import 'package:first_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:first_app/API%20work/get_data.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         
       ),
-      home:  GoogleMapsIntegration(),
+      home:  MarkerAtCenter(),
     );
   }
 }
