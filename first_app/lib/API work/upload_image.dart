@@ -48,11 +48,14 @@ class _MyImageUploadAppState extends State<MyImageUploadApp> {
       final file = await http.MultipartFile.fromPath('image', _selectedImage!.path, contentType: MediaType.parse(mimeType));
       request.files.add(file);
 
-      final response = await request.send();
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {
+         print('Response body: ${response.body}');
         // Image uploaded successfully
         print('Image uploaded successfully.');
+
       } else {
         // Handle the error
         print('Failed to upload image. Status code: ${response.statusCode}');
