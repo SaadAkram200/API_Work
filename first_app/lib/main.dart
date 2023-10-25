@@ -1,6 +1,7 @@
 import 'package:first_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:first_app/API%20work/get_data.dart';
+import 'API work/upload_image.dart';
 
 
 void main() {
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         
       ),
-      home:  LoginScreen(),
+      home:  MyImageUploadApp(),
     );
   }
 }
