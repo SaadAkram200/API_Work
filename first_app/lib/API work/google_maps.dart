@@ -18,10 +18,10 @@ class _GoogleMapsIntegration extends State<GoogleMapsIntegration>{
   Map<String, Marker> _markers = {};
 
   //ADD Marker Function
-  addMarker(String id, LatLng currentlocation){
+  addMarker(String id, LatLng location){
     var marker = Marker(
       markerId: MarkerId(id),
-      position: currentlocation,
+      position: location,
 
       infoWindow: InfoWindow(
         title: 'Saad Here',
@@ -39,9 +39,11 @@ class _GoogleMapsIntegration extends State<GoogleMapsIntegration>{
 TextEditingController _Latitudecontroller = TextEditingController();
 TextEditingController _longitudecontroller = TextEditingController();
 
-late LatLng searchlocation = LatLng(
-  double.parse(_Latitudecontroller.text), 
-  double.parse(_longitudecontroller.text));
+final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12);
+                  
+// late LatLng searchlocation = LatLng(
+//   double.parse(_Latitudecontroller.text), 
+//   double.parse(_longitudecontroller.text));
 
   @override
   Widget build(BuildContext context) {
@@ -58,19 +60,25 @@ late LatLng searchlocation = LatLng(
       
             ElevatedButton(onPressed: (){
 
-              // late LatLng searchlocation = LatLng(
-              //   double.parse(_Latitudecontroller.text), 
-              //   double.parse(_longitudecontroller.text)
-              //   );
+              late LatLng searchlocation = LatLng(
+                double.parse(_Latitudecontroller.text), 
+                double.parse(_longitudecontroller.text)
+                );
+              
               currentlocation = searchlocation;
               print('Search location: $searchlocation');
               
               print('Current Location: $currentlocation');
-              _mapController.animateCamera(CameraUpdate.newLatLng(currentlocation));
 
+              addMarker('123', currentlocation);
+              
 
               setState(() {
                // currentlocation = searchlocation;
+               _mapController.animateCamera(CameraUpdate.newLatLng(currentlocation));
+              //  _Latitudecontroller.clear();
+              //  _longitudecontroller.clear();
+
               });
 
 
@@ -81,13 +89,15 @@ late LatLng searchlocation = LatLng(
               width: double.infinity,
               height: 400,
               child: GoogleMap(initialCameraPosition:
-                CameraPosition(
-                  target: currentlocation,
-                  zoom: 16,
-                  ),
+                _position,
+                // CameraPosition(
+                  
+                //   // target: currentlocation,
+                //   // zoom: 10,
+                //   ),
                   onMapCreated: (controller) {
                     _mapController = controller;
-                    addMarker('Testing', currentlocation);
+                    //addMarker('Testing', currentlocation);
             
                   },
                   markers: _markers.values.toSet(),
