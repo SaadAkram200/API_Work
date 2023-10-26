@@ -1,52 +1,70 @@
 import 'package:first_app/widgets/reuseable-widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 // golble Variable for location
 late LatLng currentlocation = LatLng(31.5222882, 74.439049);
 
-
 class MarkerAtCenter extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MarkerAtCenter();
-  
 }
 
-class _MarkerAtCenter extends State<MarkerAtCenter>{
-
+class _MarkerAtCenter extends State<MarkerAtCenter> {
   late GoogleMapController _mapController;
 
   Map<String, Marker> _markers = {};
 
   //ADD Marker Function
-  addMarker(String id, LatLng location){
+  addMarker(String id, LatLng location) {
     var marker = Marker(
       markerId: MarkerId(id),
       position: location,
+      infoWindow:
+          InfoWindow(title: 'Saad Here', snippet: 'Working on Google Maps'),
+    );
 
-      infoWindow: InfoWindow(
-        title: 'Saad Here',
-        snippet: 'Working on Google Maps'),
-      );
-
-    _markers[id]= marker;
-    // setState(() {
-      
-    // });
-
+    _markers[id] = marker;
   }
 
+
+//to move the marker, works for both OncameraMove and onCameraIdle
+  void cameraMovement() {
+    setState(() {
+      
+      _Latitudecontroller.text = currentlocation.latitude.toString();
+      _longitudecontroller.text = currentlocation.longitude.toString();
+      addMarker('123', currentlocation);
+    });
+  }
+
+String finalAddress = "";
+//to  get the Address of marker
+Future addressGetter()async{
+  final coordinates = new Coordinates(
+          currentlocation.latitude, currentlocation.longitude);
+  var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+  var first = addresses.first;
+ 
+ finalAddress = first.featureName.toString()+first.addressLine.toString();
+   print("ADDRESS:  "+finalAddress);
+
+}
+
 // text Editing controller
-TextEditingController _Latitudecontroller = TextEditingController();
-TextEditingController _longitudecontroller = TextEditingController();
+  TextEditingController _Latitudecontroller = TextEditingController();
+  TextEditingController _longitudecontroller = TextEditingController();
 
 //Camera position variable
-final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12,);
-                  
-// late LatLng searchlocation = LatLng(
-//   double.parse(_Latitudecontroller.text), 
-//   double.parse(_longitudecontroller.text));
+  final CameraPosition _position = CameraPosition(
+    target: currentlocation,
+    zoom: 12,
+  );
 
+// late LatLng searchlocation = LatLng(
+//   double.parse(_Latitudecontroller.text),
+//   double.parse(_longitudecontroller.text));
 
   @override
   Widget build(BuildContext context) {
@@ -57,72 +75,45 @@ final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          Text(finalAddress.toString()),
           reusableTextField('Latitude', Icons.abc, false, _Latitudecontroller),
-          reusableTextField('Longitude', Icons.abc, false, _longitudecontroller),
-          
-      
-          ElevatedButton(onPressed: (){
-
- 
-
-            setState(() {
-             
-             //_mapController.animateCamera(CameraUpdate.newLatLng(currentlocation));
-              _Latitudecontroller.text = currentlocation.latitude.toString(); 
-              _longitudecontroller.text =currentlocation.longitude.toString();
-              addMarker('123', currentlocation);
-            
-
-            });
-
-
-          }, child: Text('SEARCH..')),
-      
-      
+          reusableTextField(
+              'Longitude', Icons.abc, false, _longitudecontroller),
+          ElevatedButton(
+              onPressed: () {
+                cameraMovement();
+              },
+              child: Text('SEARCH..')),
           SizedBox(
             width: double.infinity,
             height: 400,
-            child: GoogleMap(initialCameraPosition:
-                   _position,
-                   onCameraIdle:() {
-                    setState(() {
+            child: GoogleMap(
+              initialCameraPosition: _position,
 
-                      //to move the marker when map is stopped
-                      _Latitudecontroller.text = currentlocation.latitude.toString(); 
-                      _longitudecontroller.text =currentlocation.longitude.toString();
-                      addMarker('123', currentlocation);
-                      });
-                   },
-                   onCameraMove: (position) {
+              onCameraIdle: () {
+                cameraMovement();
+                addressGetter();
+              },
+              onCameraMove: (position) {
+                currentlocation = position.target;
+                //print(position.target);
+               // cameraMovement();
 
-                    
-                      currentlocation = position.target;
-                     //print(position.target);
-                    
-                     setState(() {
-                      // uncomment to move the marker along with map
-
-                      // _Latitudecontroller.text = currentlocation.latitude.toString(); 
-                      // _longitudecontroller.text =currentlocation.longitude.toString();
-                      //  addMarker('123', currentlocation);
-                     });
-                   },
+              },
               // CameraPosition(
-                
+
               //   // target: currentlocation,
               //   // zoom: 10,
               //   ),
-                onMapCreated: (controller) {
-                  _mapController = controller;
-                  //addMarker('Testing', currentlocation);
-          
-                },
-                markers: _markers.values.toSet(),
-                ),
+              onMapCreated: (controller) {
+                _mapController = controller;
+                //addMarker('Testing', currentlocation);
+              },
+              markers: _markers.values.toSet(),
+            ),
           ),
         ],
       ),
     );
   }
-
 }
