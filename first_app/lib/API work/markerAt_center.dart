@@ -41,11 +41,12 @@ TextEditingController _Latitudecontroller = TextEditingController();
 TextEditingController _longitudecontroller = TextEditingController();
 
 //Camera position variable
-final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12);
+final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12,);
                   
 // late LatLng searchlocation = LatLng(
 //   double.parse(_Latitudecontroller.text), 
 //   double.parse(_longitudecontroller.text));
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,26 +59,18 @@ final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12)
         children: [
           reusableTextField('Latitude', Icons.abc, false, _Latitudecontroller),
           reusableTextField('Longitude', Icons.abc, false, _longitudecontroller),
+          
       
           ElevatedButton(onPressed: (){
 
-            // late LatLng searchlocation = LatLng(
-            //   double.parse(_Latitudecontroller.text), 
-            //   double.parse(_longitudecontroller.text)
-            //   );
-            
-            // currentlocation = searchlocation;
-
-            // print('Search location: $searchlocation');
-            
-            // print('Current Location: $currentlocation');
-
-             addMarker('123', currentlocation);
-            
+ 
 
             setState(() {
              
-             _mapController.animateCamera(CameraUpdate.newLatLng(currentlocation));
+             //_mapController.animateCamera(CameraUpdate.newLatLng(currentlocation));
+              _Latitudecontroller.text = currentlocation.latitude.toString(); 
+              _longitudecontroller.text =currentlocation.longitude.toString();
+              addMarker('123', currentlocation);
             
 
             });
@@ -91,19 +84,27 @@ final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12)
             height: 400,
             child: GoogleMap(initialCameraPosition:
                    _position,
-                   onCameraMove: (position) {
+                   onCameraIdle:() {
+                    setState(() {
 
-                    print('POSITION');
-                      currentlocation = position.target;
-                     //print(position.target);
-                     print('current : $currentlocation');
-                     setState(() {
+                      //to move the marker when map is stopped
                       _Latitudecontroller.text = currentlocation.latitude.toString(); 
                       _longitudecontroller.text =currentlocation.longitude.toString();
                       addMarker('123', currentlocation);
+                      });
+                   },
+                   onCameraMove: (position) {
 
+                    
+                      currentlocation = position.target;
+                     //print(position.target);
+                    
+                     setState(() {
+                      // uncomment to move the marker along with map
 
-
+                      // _Latitudecontroller.text = currentlocation.latitude.toString(); 
+                      // _longitudecontroller.text =currentlocation.longitude.toString();
+                      //  addMarker('123', currentlocation);
                      });
                    },
               // CameraPosition(
