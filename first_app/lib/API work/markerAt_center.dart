@@ -1,7 +1,8 @@
 import 'package:first_app/widgets/reuseable-widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_geocoder/geocoder.dart';
+//import 'package:flutter_geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geocoding/geocoding.dart';
 
 // golble Variable for location
 late LatLng currentlocation = LatLng(31.5222882, 74.439049);
@@ -42,12 +43,18 @@ class _MarkerAtCenter extends State<MarkerAtCenter> {
 String finalAddress = "";
 //to  get the Address of marker
 Future addressGetter()async{
-  final coordinates = new Coordinates(
-          currentlocation.latitude, currentlocation.longitude);
-  var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-  var first = addresses.first;
- 
- finalAddress = first.featureName.toString()+first.addressLine.toString();
+  // final coordinates = new Coordinates(
+  //         currentlocation.latitude, currentlocation.longitude);
+  //var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+  var placemarks = await GeocodingPlatform.instance.placemarkFromCoordinates(currentlocation.latitude, currentlocation.longitude);
+  //var first = addresses.first;
+  var last = placemarks.first;
+  
+ //finalAddress = first.featureName.toString()+first.addressLine.toString();
+  finalAddress = last.street.toString()+' '+
+  last.subLocality.toString()+' '+
+  last.locality.toString()+' '+
+  last.country.toString();
    print("ADDRESS:  "+finalAddress);
 
 }
