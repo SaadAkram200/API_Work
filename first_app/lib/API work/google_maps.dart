@@ -1,4 +1,4 @@
-import 'package:first_app/widgets/reuseable-widgets.dart';
+import 'package:first_app/widgets/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -37,14 +37,14 @@ class _GoogleMapsIntegration extends State<GoogleMapsIntegration>{
   }
 
 // text Editing controller
-TextEditingController _Latitudecontroller = TextEditingController();
+TextEditingController _latitudecontroller = TextEditingController();
 TextEditingController _longitudecontroller = TextEditingController();
 
 //Camera position variable
 final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12);
                   
 // late LatLng searchlocation = LatLng(
-//   double.parse(_Latitudecontroller.text), 
+//   double.parse(_latitudecontroller.text), 
 //   double.parse(_longitudecontroller.text));
 
   @override
@@ -57,13 +57,13 @@ final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12)
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            reusableTextField('Latitude', Icons.abc, false, _Latitudecontroller),
+            reusableTextField('Latitude', Icons.abc, false, _latitudecontroller),
             reusableTextField('Longitude', Icons.abc, false, _longitudecontroller),
       
             ElevatedButton(onPressed: (){
 
               late LatLng searchlocation = LatLng(
-                double.parse(_Latitudecontroller.text), 
+                double.parse(_latitudecontroller.text), 
                 double.parse(_longitudecontroller.text)
                 );
               

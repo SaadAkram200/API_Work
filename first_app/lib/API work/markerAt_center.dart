@@ -1,4 +1,4 @@
-import 'package:first_app/widgets/reuseable-widgets.dart';
+import 'package:first_app/widgets/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -34,7 +34,7 @@ class _MarkerAtCenter extends State<MarkerAtCenter> {
   void cameraMovement() {
     setState(() {
       
-      _Latitudecontroller.text = currentlocation.latitude.toString();
+      _latitudecontroller.text = currentlocation.latitude.toString();
       _longitudecontroller.text = currentlocation.longitude.toString();
       addMarker('123', currentlocation);
     });
@@ -60,7 +60,7 @@ Future addressGetter()async{
 }
 
 // text Editing controller
-  TextEditingController _Latitudecontroller = TextEditingController();
+  TextEditingController _latitudecontroller = TextEditingController();
   TextEditingController _longitudecontroller = TextEditingController();
 
 //Camera position variable
@@ -70,7 +70,7 @@ Future addressGetter()async{
   );
 
 // late LatLng searchlocation = LatLng(
-//   double.parse(_Latitudecontroller.text),
+//   double.parse(_latitudecontroller.text),
 //   double.parse(_longitudecontroller.text));
 
   @override
@@ -83,7 +83,7 @@ Future addressGetter()async{
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(finalAddress.toString()),
-          reusableTextField('Latitude', Icons.abc, false, _Latitudecontroller),
+          reusableTextField('Latitude', Icons.abc, false, _latitudecontroller),
           reusableTextField(
               'Longitude', Icons.abc, false, _longitudecontroller),
           ElevatedButton(

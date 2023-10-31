@@ -1,9 +1,9 @@
-import 'dart:async';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/firestore.dart';
 import 'package:first_app/model.dart';
-import 'package:first_app/widgets/reuseable-widgets.dart';
+import 'package:first_app/widgets/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -62,7 +62,7 @@ class _MapFirebase extends State<MapFirebase>{
 // firestore
 final FirestoreService firestoreService = FirestoreService();
 // text Editing controller
-TextEditingController _Latitudecontroller = TextEditingController();
+TextEditingController _latitudecontroller = TextEditingController();
 TextEditingController _longitudecontroller = TextEditingController();
 
 
@@ -120,14 +120,14 @@ firestoreService.markers.snapshots().listen((querySnapshot) {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            reusableTextField('Latitude', Icons.abc, false, _Latitudecontroller),
+            reusableTextField('Latitude', Icons.abc, false, _latitudecontroller),
             reusableTextField('Longitude', Icons.abc, false, _longitudecontroller),
 
             ElevatedButton(onPressed: ()async{
 
               //to add new marker into firebase
               final newMarker = FirebaseModel(
-                latitude: _Latitudecontroller.text, 
+                latitude: _latitudecontroller.text, 
                 longitude: _longitudecontroller.text
                 );
                 firestoreService.addMarker(newMarker);
@@ -166,7 +166,7 @@ firestoreService.markers.snapshots().listen((querySnapshot) {
             ElevatedButton(onPressed: (){
 
               late LatLng searchlocation = LatLng(
-                double.parse(_Latitudecontroller.text), 
+                double.parse(_latitudecontroller.text), 
                 double.parse(_longitudecontroller.text)
                 );
               

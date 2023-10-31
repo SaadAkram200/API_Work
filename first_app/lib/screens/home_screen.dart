@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/reuseable-widgets.dart';
+import '../widgets/reuseable_widgets.dart';
 
 void main() {
   runApp(MyApp());

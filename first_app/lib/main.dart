@@ -1,6 +1,8 @@
 import 'package:first_app/API%20work/google_maps.dart';
 import 'package:first_app/API%20work/map_firebase.dart';
 import 'package:first_app/API%20work/markerAt_center.dart';
+import 'package:first_app/App/signin_screen.dart';
+import 'package:first_app/App/signup_screen.dart';
 import 'package:first_app/firebase_options.dart';
 import 'package:first_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +31,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
        
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
         useMaterial3: true,
         
       ),
-      home:  MapFirebase(),
+      home:  signUpScreen(),
     );
   }
 }
