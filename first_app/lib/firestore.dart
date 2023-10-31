@@ -35,14 +35,14 @@ class FirestoreService {
 
 
 // Stream 
-  Stream<List<FirebaseModel>> getMarkersStream() {
-    return markers.snapshots().map((querySnapshot) {
-      return querySnapshot.docs.map((document) {
-        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        return FirebaseModel.fromMap(data);
-      }).toList();
-    });
-  }
+  // Stream<List<FirebaseModel>> getMarkersStream() {
+  //   return markers.snapshots().map((querySnapshot) {
+  //     return querySnapshot.docs.map((document) {
+  //       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+  //       return FirebaseModel.fromMap(data);
+  //     }).toList();
+  //   });
+  // }
 
   
 

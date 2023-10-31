@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../widgets/reuseable_widgets.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _HomeScreenState extends State<HomeScreen> {
   TextEditingController _fnameTextcontroller=TextEditingController();
 
   TextEditingController _lnameTextcontroller=TextEditingController();

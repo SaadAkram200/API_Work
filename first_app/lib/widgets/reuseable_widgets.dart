@@ -133,7 +133,8 @@ class _reusableTextFieldsState extends State<reusableTextFields> {
                      
                       setState(() {
                          showPassword = !showPassword;
-                        // widget.obscureText =false;
+
+                         //widget.obscureText =false;
                          
                       });
                     },
@@ -148,7 +149,7 @@ class _reusableTextFieldsState extends State<reusableTextFields> {
                           ),
                   )
                 : null),
-        obscureText: widget.obscureText,
+        obscureText: widget.obscureText? !showPassword: showPassword,
         controller: widget.controller,
       ),
     );

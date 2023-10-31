@@ -1,6 +1,11 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:first_app/App/firestore_services.dart';
+import 'package:first_app/App/home_screen.dart';
 import 'package:first_app/App/signin_screen.dart';
+import 'package:first_app/App/user_model.dart';
 import 'package:first_app/widgets/reuseable_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +17,57 @@ class signUpScreen extends StatefulWidget {
 }
 
 class _signUpScreen extends State<signUpScreen> {
+
+//firestoreservice
+final FirestoreServices firestoreServices = FirestoreServices();
+
+//Sign in function
+  Future signUp() async {
+    // checking if Textfields are empty
+    if (_emailTextcontroller.text == "" ||
+        _passwordTextcontroller.text == "" ||
+        _usernameTextcontroller.text == "") {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: Duration(seconds: 2),
+        content: Text(
+          'Please fill all the fields',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.redAccent),
+        ),
+        backgroundColor: Colors.white,
+      ));
+    } else {
+      try {
+         FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailTextcontroller.text.trim(),
+            password: _passwordTextcontroller.text.trim()).then((value) {
+              print(value.user?.uid);
+              final newUser = UserModel(
+                username: _usernameTextcontroller.text, 
+                email: _emailTextcontroller.text, 
+                password: _passwordTextcontroller.text, 
+                image: imageUrl);
+                firestoreServices.addUser(newUser);
+              
+            });
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 2),
+          content: Text(
+            'Error occurs, please try again',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.redAccent),
+          ),
+          backgroundColor: Colors.white,
+        ));
+      }
+    }
+  }
+
   //image picker
+  String imageUrl = '';
   File? selectedImage;
 
   Future getImage() async {
@@ -21,9 +76,23 @@ class _signUpScreen extends State<signUpScreen> {
 
     if (file == null) return;
 
-    setState(() {
+    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirImage = referenceRoot.child('image');
+    Reference referenceImageToUpload = referenceDirImage.child(uniqueFileName);
+
+    try {
+
+      await referenceImageToUpload.putFile(File(file.path));
+      imageUrl = await referenceImageToUpload.getDownloadURL();
+
+      setState(() {
       selectedImage = File(file.path);
     });
+    } catch (error) {
+      
+    }
+    
   }
 
   //Text controller
@@ -132,6 +201,7 @@ class _signUpScreen extends State<signUpScreen> {
                           ]),
                         ),
                       ),
+                      
                       //username TextFiled
                       reusableTextFields(
                           controller: _usernameTextcontroller,
@@ -153,14 +223,16 @@ class _signUpScreen extends State<signUpScreen> {
                           fieldName: 'Password',
                           obscureText: true),
 
-                      // Login Button
+                      // Signup Button
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         child: SizedBox(
                           width: 200,
                           height: 35,
                           child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                signUp();
+                              },
                               child: Text(
                                 'Sign Up',
                                 style: TextStyle(
