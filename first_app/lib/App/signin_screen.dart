@@ -10,10 +10,8 @@ class signInScreen extends StatefulWidget {
 }
 
 class _signInScreen extends State<signInScreen> {
-
   //Sign in function
   Future signIn() async {
-
     // checking if Textfields are empty
     if (_emailTextcontroller.text == "" || _passwordTextcontroller.text == "") {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -87,12 +85,19 @@ class _signInScreen extends State<signInScreen> {
                       height: 200,
                       child: Image.asset('assets/images/logo1.png')),
                 ),
-                
+
                 //Center container
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black45,
+                        blurRadius: 4,
+                        offset: Offset(4, 8), // Shadow position
+                      ),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,7 +151,6 @@ class _signInScreen extends State<signInScreen> {
                           height: 35,
                           child: ElevatedButton(
                               onPressed: () {
-                                
                                 signIn();
                               },
                               child: Text(

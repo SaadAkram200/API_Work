@@ -5,7 +5,7 @@ import 'package:first_app/App/user_model.dart';
 
 class FirestoreServices {
 
-  final CollectionReference users = 
+  final CollectionReference<Map<String, dynamic>> users = 
     FirebaseFirestore.instance.collection('users');
   
   //Create user

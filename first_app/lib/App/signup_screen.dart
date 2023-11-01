@@ -8,7 +8,10 @@ import 'package:first_app/App/user_model.dart';
 import 'package:first_app/widgets/reuseable_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebasestorage;
+import 'package:mime/mime.dart';
 
 class signUpScreen extends StatefulWidget {
   @override
@@ -66,33 +69,35 @@ final FirestoreServices firestoreServices = FirestoreServices();
   }
 
   //image picker
-  String imageUrl = '';
-  File? selectedImage;
+   String imageUrl = '';
+   File? selectedImage;
+  Future<String> uploadFile() async {
 
-  Future getImage() async {
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+  try {
+    String path = "images/${DateTime.now().millisecondsSinceEpoch}";
+    final mimeType = lookupMimeType(file!.path);
+    print(mimeType);
+    final firebasestorage.FirebaseStorage _storage =
+        firebasestorage.FirebaseStorage.instance;
+    var reference = _storage.ref().child(path);
+    var r = await reference.putData(
+        await file.readAsBytes(), SettableMetadata(contentType: mimeType));
 
-    if (file == null) return;
-
-    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirImage = referenceRoot.child('image');
-    Reference referenceImageToUpload = referenceDirImage.child(uniqueFileName);
-
-    try {
-
-      await referenceImageToUpload.putFile(File(file.path));
-      imageUrl = await referenceImageToUpload.getDownloadURL();
-
+    if (r.state == firebasestorage.TaskState.success) {
+      imageUrl = await reference.getDownloadURL();
       setState(() {
       selectedImage = File(file.path);
     });
-    } catch (error) {
-      
+      return imageUrl;
+    } else {
+      throw PlatformException(code: "404", message: "no download link found");
     }
-    
+  } catch (e) {
+    rethrow;
   }
+}
 
   //Text controller
   TextEditingController _usernameTextcontroller = TextEditingController();
@@ -156,6 +161,13 @@ final FirestoreServices firestoreServices = FirestoreServices();
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black45,
+                        blurRadius: 4,
+                        offset: Offset(4, 8), // Shadow position
+                      ),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -186,7 +198,7 @@ final FirestoreServices firestoreServices = FirestoreServices();
                             Align(
                               alignment: Alignment.bottomRight,
                               child: InkWell(
-                                onTap: getImage,
+                                onTap: uploadFile,
                                 child: CircleAvatar(
                                   radius: 15,
                                   backgroundColor: Colors.white,

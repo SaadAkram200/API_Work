@@ -1,6 +1,3 @@
-
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/firestore.dart';
 import 'package:first_app/model.dart';
 import 'package:first_app/widgets/reuseable_widgets.dart';
@@ -89,7 +86,6 @@ firestoreService.markers.snapshots().listen((querySnapshot) {
       latLngList.add(latLng);
     }
   }
-  print('HERE: ' + latLngList.toString());
   addMarkers(latLngList);
 });
 

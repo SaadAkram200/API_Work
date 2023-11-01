@@ -1,6 +1,6 @@
+import 'package:first_app/App/navDrawer.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/reuseable_widgets.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -9,54 +9,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController _fnameTextcontroller=TextEditingController();
-
-  TextEditingController _lnameTextcontroller=TextEditingController();
-
-  createData(){
-    print('created');
-  }
-
-  updateData(){}
-  deleteData(){}
-  readData(){}
+bool clicked= false;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(title: Text('CRUD Operations')),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: reusableTextField('First Name', Icons.person, false, _fnameTextcontroller),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: reusableTextField("Last Name", Icons.person_2, false, _lnameTextcontroller),
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-
-                ElevatedButton(onPressed: (){createData();}, child: Text('Create'),),
-                ElevatedButton(onPressed: (){deleteData();}, child: Text('Delete'),),
-                ElevatedButton(onPressed: (){updateData();}, child: Text('Update'),),
-                ElevatedButton(onPressed: (){readData();}, child: Text('Read'),),
-              ],
-
-
-            ),
-
-
-          ],
-          
-        ),
+    return Scaffold(
+      drawer: NavDrawer(),
+      appBar: AppBar(
+        
       ),
+      body: Center(
+        child: ElevatedButton(onPressed: (){
+          setState(() {
+            clicked=!clicked;
+          });
+        }, 
+        child:clicked? Text('Stop Tracking'):Text('Start Tracking'))
+      ) ,
     );
-  }
 }
-
+}
