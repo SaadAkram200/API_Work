@@ -42,12 +42,13 @@ UserModel ?userData;
           UserAccountsDrawerHeader(
             accountName: Text(userData != null? userData!.username: 'loading'),
             accountEmail: Text(userData != null? userData!.email: 'loading'),
-            currentAccountPicture: CircleAvatar(
-              child: userData?.image !=null? Image.network(userData!.image!):Image.asset(
-                'assets/images/user.png',
-                fit: BoxFit.cover,
-                width: 90,
-                height: 90,
+            currentAccountPicture: ClipOval(
+              child: CircleAvatar(
+                radius: 40,
+                child: userData?.image !=null? Image.network(userData!.image!):Image.asset(
+                  'assets/images/user.png',
+                  //fit: BoxFit.cover,
+                ),
               ),
             ),
             decoration: BoxDecoration(

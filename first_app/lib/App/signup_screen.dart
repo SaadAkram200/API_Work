@@ -48,7 +48,9 @@ final FirestoreServices firestoreServices = FirestoreServices();
                 username: _usernameTextcontroller.text, 
                 email: _emailTextcontroller.text, 
                 password: _passwordTextcontroller.text, 
-                image: imageUrl);
+                image: imageUrl,
+                latitude: null,
+                longitude: null, );
                 firestoreServices.addUser(newUser);
               
             });
@@ -147,6 +149,7 @@ final FirestoreServices firestoreServices = FirestoreServices();
             padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
             child: Column(
               children: [
+               
                 //Logo
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 50, 0, 30),
@@ -172,6 +175,7 @@ final FirestoreServices firestoreServices = FirestoreServices();
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+
                       //Page name
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),

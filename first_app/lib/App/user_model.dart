@@ -3,13 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel{
 
 //late String id;
-  late String username, email, password, id;
-  String? image;
+  late String username, email, password, id; 
+  String? image,latitude,longitude;
   UserModel({
     required this.username,
     required this.email,
     required this.password,
     required this.image,
+    required this.latitude,
+    required this.longitude,
   });
 
   UserModel.fromMap(Map<String, dynamic>data)
@@ -19,6 +21,9 @@ class UserModel{
     email = data['email'];
     password = data['password'];
     image = data['image'];
+    latitude = data['latitude'];
+    longitude = data['longitude'];
+
   }
 
   Map<String, dynamic>toMap(){
@@ -29,6 +34,8 @@ class UserModel{
       'password': password,
       'image': image,
       'timestamp': Timestamp.now(),
+      'latitude': latitude,
+      'longitude': longitude,
 
     };
   }

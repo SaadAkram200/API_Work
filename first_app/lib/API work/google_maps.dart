@@ -90,8 +90,8 @@ final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12)
             SizedBox(
               width: double.infinity,
               height: 400,
-              child: GoogleMap(initialCameraPosition:
-                     _position,
+              child: GoogleMap(
+                initialCameraPosition:_position,
                 // CameraPosition(
                   
                 //   // target: currentlocation,
