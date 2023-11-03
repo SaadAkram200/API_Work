@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:first_app/App/firestore_services.dart';
 import 'package:first_app/App/navDrawer.dart';
+import 'package:first_app/App/user_model.dart';
 import 'package:first_app/widgets/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +18,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  //forestore services instant
+ FirestoreServices _firestoreServices = FirestoreServices();
 
   // for Start tracking button
   bool clicked = false;
@@ -57,6 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
   // text Editing controller
   TextEditingController _latitudecontroller = TextEditingController();
   TextEditingController _longitudecontroller = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,6 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               setState(() {
                 clicked = !clicked;
+                
+
                 if (clicked) {
                   // Start the position stream
                   positionStream = Geolocator.getPositionStream(
@@ -126,6 +134,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         _latitudecontroller.text = currentlocation.latitude.toString();
                         _longitudecontroller.text = currentlocation.longitude.toString();
                         addMarker('id', currentlocation);
+
+                        //update User latlng
+                        _firestoreServices.updateLatlng(_latitudecontroller.text, _longitudecontroller.text);
                       });
                     }
                   });

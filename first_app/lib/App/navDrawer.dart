@@ -9,10 +9,11 @@ class NavDrawer extends StatefulWidget {
 }
 
 class _NavDrawerState extends State<NavDrawer> {
-   //forestore services instant
+
+  //forestore services instant
  FirestoreServices _firestoreServices = FirestoreServices(); 
 
-//testing variable
+// variable to store userdata coming from Firestore
 UserModel ?userData;
 
  //geting user info
@@ -47,7 +48,7 @@ UserModel ?userData;
                 radius: 40,
                 child: userData?.image !=null? Image.network(userData!.image!):Image.asset(
                   'assets/images/user.png',
-                  //fit: BoxFit.cover,
+                  //fit: BoxFit.fill,
                 ),
               ),
             ),

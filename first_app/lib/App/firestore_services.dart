@@ -16,4 +16,19 @@ class FirestoreServices {
     user.id = uid;
     return doc.set(user.toMap());
   }
+  // UPDATE
+// Future<void> updateLatlng(UserModel updateUser) {
+//   var uid = FirebaseAuth.instance.currentUser!.uid;
+//   return users.doc(uid).update(updateUser.toMap());
+// }
+
+Future<void> updateLatlng(String latitude, String longitude){
+  var uid = FirebaseAuth.instance.currentUser!.uid;
+  return users.doc(uid).update({
+    
+  'latitude': latitude,
+  'longitude': longitude,
+  
+  });
+}
 }
