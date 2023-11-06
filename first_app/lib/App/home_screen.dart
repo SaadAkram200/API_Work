@@ -112,22 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
           Text('YOUR CURRENT LOCATION'),
           reusableTextField('Latitude', Icons.abc, false, _latitudecontroller),
           reusableTextField('Longitude', Icons.abc, false, _longitudecontroller),
-          
-          // ElevatedButton(
-          //     onPressed: () {
-          //       late LatLng searchlocation = LatLng(
-          //           double.parse(_latitudecontroller.text),
-          //           double.parse(_longitudecontroller.text));
-          //       currentlocation = searchlocation;
-          //       print('Search location: $searchlocation');
-          //       print('Current Location: $currentlocation');
-          //       addMarker('123', currentlocation);
-          //       setState(() {
-          //         _mapController
-          //             .animateCamera(CameraUpdate.newLatLng(currentlocation));
-          //       });
-          //     },
-          //     child: Text('SEARCH')),
 
           //google map
           SizedBox(
@@ -135,11 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 400,
             child: GoogleMap(
               initialCameraPosition: _position,
-              // CameraPosition(
 
-              //   // target: currentlocation,
-              //   // zoom: 10,
-              //   ),
               onMapCreated: (controller) {
                 _mapController = controller;
                 
