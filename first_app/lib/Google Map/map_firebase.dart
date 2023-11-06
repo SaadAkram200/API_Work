@@ -1,5 +1,8 @@
-import 'package:first_app/firestore.dart';
-import 'package:first_app/model.dart';
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:first_app/Google%20Map/firestore.dart';
+import 'package:first_app/Google%20Map/model.dart';
 import 'package:first_app/widgets/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -65,36 +68,51 @@ TextEditingController _longitudecontroller = TextEditingController();
 
 //Camera position variable
 final CameraPosition _position =CameraPosition(target: currentlocation,zoom: 12);
-                  
+
+//Stream Subscription
+ StreamSubscription<List<FirebaseModel>>? markersSubscription;    
+
 //initState
 @override
   void initState() {
     super.initState();
-    
-              
-firestoreService.markers.snapshots().listen((querySnapshot) {
+  
   List<LatLng> latLngList = [];
-  latLngList.clear();
-  for (var document in querySnapshot.docs) {
-    if (document.exists) {
-      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-      FirebaseModel marker = FirebaseModel.fromMap(data);
-
+  markersSubscription = firestoreService.getMarkersStream().listen((markers) {
+    
+    for (var marker in markers) {
       double latitude = double.parse(marker.latitude);
       double longitude = double.parse(marker.longitude);
       LatLng latLng = LatLng(latitude, longitude);
       latLngList.add(latLng);
     }
-  }
-  addMarkers(latLngList);
-});
+    addMarkers(latLngList);
+    latLngList.clear();
+  });
+
+// firestoreService.markers.snapshots().listen((querySnapshot) {
+//   List<LatLng> latLngList = [];
+//   latLngList.clear();
+//   for (var document in querySnapshot.docs) {
+//     if (document.exists) {
+//       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+//       FirebaseModel marker = FirebaseModel.fromMap(data);
+
+//       double latitude = double.parse(marker.latitude);
+//       double longitude = double.parse(marker.longitude);
+//       LatLng latLng = LatLng(latitude, longitude);
+//       latLngList.add(latLng);
+//     }
+//   }
+//   addMarkers(latLngList);
+// });
 
   
-
-    //List<LatLng> latLngList = [];
-
+    
+    
     // firestoreService.getMarkersStream().listen((List<FirebaseModel> markers) { 
-      
+    //   List<LatLng> latLngList = [];
+    //   latLngList.clear();
     //   for (FirebaseModel marker in markers) {
     //   double latitude = double.parse(marker.latitude);
     //   double longitude = double.parse(marker.longitude);
@@ -106,6 +124,7 @@ firestoreService.markers.snapshots().listen((querySnapshot) {
     // });
     
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

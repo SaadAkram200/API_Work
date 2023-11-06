@@ -1,5 +1,8 @@
 import 'dart:async';
-
+import 'dart:typed_data';
+import 'package:first_app/App/others_location.dart';
+import 'package:image/image.dart' as img;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/App/firestore_services.dart';
 import 'package:first_app/App/navDrawer.dart';
 import 'package:first_app/App/user_model.dart';
@@ -7,6 +10,7 @@ import 'package:first_app/widgets/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
 
 // golble Variable for location
 late LatLng currentlocation = LatLng(31.5222882, 74.439049);
@@ -17,9 +21,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
+ 
   //forestore services instant
- FirestoreServices _firestoreServices = FirestoreServices();
+  FirestoreServices _firestoreServices = FirestoreServices();
+  // variable to store userdata coming from Firestore
+  UserModel? userData;
+  //geting user info
+  @override
+  void initState() {
+    super.initState();
+    var uid = FirebaseAuth.instance.currentUser?.uid;
+    _firestoreServices.users.doc(uid).snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        userData = UserModel.fromMap(snapshot.data() as Map<String, dynamic>);
+
+        setState(() {});
+      } else {
+        print('no data');
+      }
+    });
+    getUserCurrentLocation();
+  }
 
   // for Start tracking button
   bool clicked = false;
@@ -32,18 +54,34 @@ class _HomeScreenState extends State<HomeScreen> {
   Map<String, Marker> _markers = {};
 
   //ADD Marker Function
-  addMarker(String id, LatLng location) {
+  addMarker(String id, LatLng location) async{
+  var iconurl = userData?.image;
+  var dataBytes;
+  var request = await http.get(Uri.parse(iconurl!));
+  var bytes = await request.bodyBytes;
+
+  setState(() {
+  dataBytes = bytes;
+  });
     var marker = Marker(
       markerId: MarkerId(id),
       position: location,
       infoWindow:
-          InfoWindow(title: 'Saad Here', snippet: 'Working on Google Maps'),
+          InfoWindow(
+            title: userData != null? userData!.username: 'loading', 
+            snippet: 'Working on Google Maps'),
+            icon: BitmapDescriptor.fromBytes(cropImage(dataBytes.buffer.asUint8List())),
     );
 
     _markers[id] = marker;
-    
   }
-
+// to adjust the size of image
+  Uint8List cropImage(Uint8List imageBytes) {
+  final img.Image image = img.decodeImage(imageBytes)!;
+  final img.Image resizedImage = img.copyResize(image, width: 100, height: 100);
+  final Uint8List croppedImageBytes = Uint8List.fromList(img.encodePng(resizedImage));
+  return croppedImageBytes;
+}
   //stream
   StreamSubscription<Position>? positionStream;
 
@@ -58,10 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return await Geolocator.getCurrentPosition();
   }
 
+
   // text Editing controller
   TextEditingController _latitudecontroller = TextEditingController();
   TextEditingController _longitudecontroller = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Text('YOUR CURRENT LOCATION'),
           reusableTextField('Latitude', Icons.abc, false, _latitudecontroller),
-          reusableTextField(
-              'Longitude', Icons.abc, false, _longitudecontroller),
+          reusableTextField('Longitude', Icons.abc, false, _longitudecontroller),
+          
           // ElevatedButton(
           //     onPressed: () {
           //       late LatLng searchlocation = LatLng(
@@ -90,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //     },
           //     child: Text('SEARCH')),
 
+          //google map
           SizedBox(
             width: double.infinity,
             height: 400,
@@ -102,19 +142,18 @@ class _HomeScreenState extends State<HomeScreen> {
               //   ),
               onMapCreated: (controller) {
                 _mapController = controller;
-                //addMarker('Testing', currentlocation);
+                
               },
               markers: _markers.values.toSet(),
             ),
           ),
 
-          // Start Tracking button
+          // Start sharing location button
           ElevatedButton(
             onPressed: () {
               setState(() {
                 clicked = !clicked;
                 
-
                 if (clicked) {
                   // Start the position stream
                   positionStream = Geolocator.getPositionStream(
@@ -125,18 +164,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     late LatLng liveLocation =
                         LatLng(position.latitude, position.longitude);
                     currentlocation = liveLocation;
-                    print(' Current LOCATION : ' +
-                       currentlocation.latitude.toString());
 
                     if (clicked) {
                       setState(() {
-                        _mapController.animateCamera(CameraUpdate.newLatLng(currentlocation));
-                        _latitudecontroller.text = currentlocation.latitude.toString();
-                        _longitudecontroller.text = currentlocation.longitude.toString();
+
+                        
+                        //move the camera along with currentlocation
+                        _mapController.animateCamera(
+                            CameraUpdate.newLatLng(currentlocation));
+                        _latitudecontroller.text =
+                            currentlocation.latitude.toString();
+                        _longitudecontroller.text =
+                            currentlocation.longitude.toString();
                         addMarker('id', currentlocation);
 
-                        //update User latlng
-                        _firestoreServices.updateLatlng(_latitudecontroller.text, _longitudecontroller.text);
+                        //update User latlng in firestore
+                        _firestoreServices.updateLatlng(
+                           double.parse(_latitudecontroller.text) ,
+                           double.parse( _longitudecontroller.text));
+
+                        
+                        
                       });
                     }
                   });
@@ -146,8 +194,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               });
             },
-            child: clicked ? Text('Stop Tracking') : Text('Start Tracking'),
-          )
+            child: clicked ? Text('Stop sharing') : Text('Share your Location'),
+          ),
+        
+          //Other's location button
+          ElevatedButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> othersLocation()));
+          }, child: Text('See Others Location')),
+
         ],
       ),
     );

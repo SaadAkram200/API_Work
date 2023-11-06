@@ -4,7 +4,8 @@ class UserModel{
 
 //late String id;
   late String username, email, password, id; 
-  String? image,latitude,longitude;
+  String? image;
+  double? latitude,longitude;
   UserModel({
     required this.username,
     required this.email,

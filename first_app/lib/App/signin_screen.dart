@@ -30,7 +30,7 @@ class _signInScreen extends State<signInScreen> {
             password: _passwordTextcontroller.text);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomeScreen()));
-      } catch (e) {
+      } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: Duration(seconds: 2),
           content: Text(

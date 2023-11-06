@@ -20,7 +20,7 @@ UserModel ?userData;
   @override
   void initState() {
     super.initState();
-    var uid = FirebaseAuth.instance.currentUser!.uid;
+    var uid = FirebaseAuth.instance.currentUser?.uid;
   _firestoreServices.users.doc(uid).snapshots().listen((snapshot) { 
     
     if(snapshot.exists){
