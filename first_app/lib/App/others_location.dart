@@ -21,27 +21,19 @@ class _othersLocationState extends State<othersLocation> {
   FirestoreServices _firestoreServices = FirestoreServices();
 
   //Stream
-  StreamSubscription<List<UserModel>>? streamSubscription;
-
-  //lists to store latlng and other data of users
-  List<LatLng> latLngList = [];
-  List<Map<String, dynamic>> userDataList = [];
+  StreamSubscription<List<UserModel>>? streamSubscription;  
 
   //Camera position variable
   final CameraPosition _position =
       CameraPosition(target: currentlocation, zoom: 12);
 
-  late GoogleMapController _mapController;
-
   Map<String, Marker> _markers = {};
 //ADD Marker Function
   addMarker(List <dynamic> userLocation ) async{
     userLocation.forEach((userModel) async { 
-      double? latitude = userModel.latitude;
-      double? longitude = userModel.longitude;
-      LatLng latLng = LatLng(latitude!, longitude!);
-      
 
+      LatLng latLng = LatLng(userModel.latitude, userModel.longitude);
+      
       var iconurl = userModel.image;
       var dataBytes;
       var request = await http.get(Uri.parse(iconurl!));
@@ -85,13 +77,7 @@ class _othersLocationState extends State<othersLocation> {
           height: 400,
           child: GoogleMap(
             initialCameraPosition: _position,
-            // CameraPosition(
-
-            //   // target: currentlocation,
-            //   // zoom: 10,
-            //   ),
             onMapCreated: (controller) {
-              _mapController = controller;
             },
             markers: _markers.values.toSet(),
           ),

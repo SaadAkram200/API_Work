@@ -149,8 +149,60 @@ class _reusableTextFieldsState extends State<reusableTextFields> {
                           ),
                   )
                 : null),
-        obscureText: widget.obscureText? !showPassword: showPassword,
+        obscureText: widget.obscureText? showPassword: !showPassword,
         controller: widget.controller,
+      ),
+    );
+  }
+}
+
+// for provider work : grocery app
+// ignore: must_be_immutable
+class GroceryItemTile extends StatelessWidget {
+  
+
+  final String itemName, itemPrice, itemPath;
+  final color;
+  void Function()? onPressed;
+  
+   GroceryItemTile({
+    super.key, 
+    required this.itemName, 
+    required this.itemPrice, 
+    required this.itemPath, 
+    required this.color,
+    required this.onPressed,
+    
+    });
+
+  @override
+  Widget build(BuildContext context) {
+    return  Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: color[100],
+          borderRadius: BorderRadius.circular(20)
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+
+          Image.asset(itemPath,height: 80,),
+
+          Text(itemName,style: TextStyle(fontWeight: FontWeight.bold),),
+          
+          MaterialButton(
+            onPressed: onPressed,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            color: color[800],
+            child: Text(
+              'Rs.'+itemPrice,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,),),
+          )
+        ]),
       ),
     );
   }

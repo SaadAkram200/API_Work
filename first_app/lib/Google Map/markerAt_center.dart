@@ -13,7 +13,6 @@ class MarkerAtCenter extends StatefulWidget {
 }
 
 class _MarkerAtCenter extends State<MarkerAtCenter> {
-  late GoogleMapController _mapController;
 
   Map<String, Marker> _markers = {};
 
@@ -113,7 +112,6 @@ Future addressGetter()async{
               //   // zoom: 10,
               //   ),
               onMapCreated: (controller) {
-                _mapController = controller;
                 //addMarker('Testing', currentlocation);
               },
               markers: _markers.values.toSet(),

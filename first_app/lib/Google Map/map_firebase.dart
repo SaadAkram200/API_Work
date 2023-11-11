@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/Google%20Map/firestore.dart';
 import 'package:first_app/Google%20Map/model.dart';
 import 'package:first_app/widgets/reuseable_widgets.dart';
