@@ -51,8 +51,12 @@ class MyTextField extends StatelessWidget {
   }
 }
 
-TextField reusableTextField(String text, IconData icon, bool isPasswordType,
-    TextEditingController controller) {
+TextField reusableTextField(
+  String text, 
+  IconData icon, 
+  bool isPasswordType,
+  TextEditingController controller
+    ) {
   return TextField(
     maxLength: 50,
     controller: controller,
@@ -84,7 +88,7 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType,
   );
 }
 
-// Reusables for app
+// Reusables for App
 
 class reusableTextFields extends StatefulWidget {
   final TextEditingController controller;
@@ -101,11 +105,9 @@ class reusableTextFields extends StatefulWidget {
 
   @override
   State<reusableTextFields> createState() => _reusableTextFieldsState();
-}
-
-class _reusableTextFieldsState extends State<reusableTextFields> {
-
-  bool showPassword = false;
+  }
+  class _reusableTextFieldsState extends State<reusableTextFields> {
+  bool showPassword = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -130,12 +132,10 @@ class _reusableTextFieldsState extends State<reusableTextFields> {
             suffixIcon: widget.obscureText
                 ? GestureDetector(
                     onTap: () {
-                     
                       setState(() {
-                         showPassword = !showPassword;
+                        showPassword = !showPassword;
 
-                         //widget.obscureText =false;
-                         
+                        //widget.obscureText =false;
                       });
                     },
                     child: showPassword
@@ -149,58 +149,68 @@ class _reusableTextFieldsState extends State<reusableTextFields> {
                           ),
                   )
                 : null),
-        obscureText: widget.obscureText? showPassword: !showPassword,
+        obscureText: widget.obscureText ? showPassword : !showPassword,
         controller: widget.controller,
       ),
     );
   }
 }
 
+
 // for provider work : grocery app
 // ignore: must_be_immutable
 class GroceryItemTile extends StatelessWidget {
-  
-
   final String itemName, itemPrice, itemPath;
   final color;
   void Function()? onPressed;
-  
-   GroceryItemTile({
-    super.key, 
-    required this.itemName, 
-    required this.itemPrice, 
-    required this.itemPath, 
+
+  GroceryItemTile({
+    super.key,
+    required this.itemName,
+    required this.itemPrice,
+    required this.itemPath,
     required this.color,
     required this.onPressed,
-    
-    });
+  });
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
           color: color[100],
-          borderRadius: BorderRadius.circular(20)
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black45,
+              blurRadius: 4,
+              offset: Offset(4, 8), // Shadow position
+            ),
+          ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-
-          Image.asset(itemPath,height: 80,),
-
-          Text(itemName,style: TextStyle(fontWeight: FontWeight.bold),),
-          
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Image.asset(
+            itemPath,
+            height: 80,
+          ),
+          Text(
+            itemName,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           MaterialButton(
             onPressed: onPressed,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             color: color[800],
             child: Text(
-              'Rs.'+itemPrice,
+              'Rs.' + itemPrice,
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.bold,),),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           )
         ]),
       ),

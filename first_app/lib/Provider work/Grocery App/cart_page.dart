@@ -15,12 +15,12 @@ class CartPage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Consumer<CartProvider>(
-          builder: (context, value, child) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // my cart heading
-                Padding(
+        builder: (context, value, child) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // my cart heading
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.0),
                 child: Text(
                   "My Cart",
@@ -31,42 +31,61 @@ class CartPage extends StatelessWidget {
                 ),
               ),
 
-                // list of items
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: value.itemList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: value.itemList[index][3].shade100,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: ListTile(
-                            leading: Image.asset(value.itemList[index][2]),
-                            title: Text(
-                              value.itemList[index][0],
-                              style: TextStyle(fontWeight: FontWeight.bold),),
-                            subtitle: Text('Rs.'+value.itemList[index][1]),
-                            trailing: TextButton(
-                                onPressed: () {
-                                  value.removeFromList(value.itemList[index]);
-                                },
-                                child: Icon(Icons.cancel,color: value.itemList[index][3].shade800,)),
-                          ),
+              // list of items
+              Expanded(
+                child: ListView.builder(
+                  itemCount: value.itemList.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: value.itemList[index][3].shade100,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black45,
+                              blurRadius: 4,
+                              offset: Offset(4, 8), // Shadow position
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                        child: ListTile(
+                          leading: Image.asset(value.itemList[index][2]),
+                          title: Text(
+                            value.itemList[index][0],
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text('Rs.' + value.itemList[index][1]),
+                          trailing: TextButton(
+                              onPressed: () {
+                                value.removeFromList(value.itemList[index]);
+                              },
+                              child: Icon(
+                                Icons.cancel,
+                                color: value.itemList[index][3].shade800,
+                              )),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              
-                // total bill
-                Padding(
+              ),
+
+              // total bill
+              Padding(
                 padding: const EdgeInsets.all(36.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.green,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black45,
+                        blurRadius: 4,
+                        offset: Offset(4, 8), // Shadow position
+                      ),
+                    ],
                   ),
                   padding: const EdgeInsets.all(24),
                   child: Row(
@@ -118,12 +137,10 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
               ),
-            
-          
-              ],
-            );
-          },
-        ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
