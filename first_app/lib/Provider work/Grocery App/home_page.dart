@@ -103,13 +103,14 @@ class HomePage extends StatelessWidget {
                   padding: EdgeInsets.all(10),
                   itemBuilder: (context, index) {
                     return GroceryItemTile(
-                      itemName: value.shopItems[index][0],
-                      itemPrice: value.shopItems[index][1],
-                      itemPath: value.shopItems[index][2],
-                      color: value.shopItems[index][3],
+                      itemName: value.shopItems[index].itemname,
+                      itemPrice: value.shopItems[index].itemprice,
+                      itemPath: value.shopItems[index].image,
+                      color: value.shopItems[index].color,
                       onPressed: () {
 
                         value.addtoList(index);
+                        print(value.itemList);
 
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: Duration(seconds: 2),

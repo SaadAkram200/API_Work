@@ -1,4 +1,5 @@
 import 'package:first_app/Provider%20work/Grocery%20App/cart_provider.dart';
+import 'package:first_app/Provider%20work/Grocery%20App/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,7 @@ class CartPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: value.itemList[index][3].shade100,
+                          color: getMaterialColor(Color(value.itemList[index].color)).shade100,//shade(200)
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
@@ -51,19 +52,22 @@ class CartPage extends StatelessWidget {
                           ],
                         ),
                         child: ListTile(
-                          leading: Image.network(value.itemList[index][2]),
+                          leading: Image.network(value.itemList[index].image),
                           title: Text(
-                            value.itemList[index][0],
+                            value.itemList[index].itemname,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          subtitle: Text('Rs.' + value.itemList[index][1]),
+                          subtitle: Text(
+                            'Rs.' + value.itemList[index].itemprice,
+                            style: TextStyle(fontWeight: FontWeight.bold)
+                            ),
                           trailing: TextButton(
                               onPressed: () {
                                 value.removeFromList(value.itemList[index]);
                               },
                               child: Icon(
                                 Icons.cancel,
-                                color: value.itemList[index][3].shade800,
+                                color: getMaterialColor(Color(value.itemList[index].color)).shade500,//.shade800,
                               )),
                         ),
                       ),

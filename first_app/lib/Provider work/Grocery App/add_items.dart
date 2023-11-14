@@ -109,26 +109,26 @@ class _AddItemsState extends State<AddItems> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   
-                                  // //adding new item to firebase
-                                  // try {
-                                  //   final newitem = ItemModel(
-                                  //     itemname: _itemNameController.text,
-                                  //     itemprice: _itemPriceController.text,
-                                  //     image: value.imageUrl,
-                                  //     color: value.mycolor.value);
-                                  // itemfirestoreService.addItems(newitem).then(
-                                  //     (value) => ScaffoldMessenger.of(context)
-                                  //             .showSnackBar(SnackBar(
-                                  //           duration: Duration(seconds: 2),
-                                  //           content: Text(
-                                  //             "item Uploaded Sucessfully!",
-                                  //             textAlign: TextAlign.center,
-                                  //           ),
+                                  //adding new item to firebase
+                                  try {
+                                    final newitem = ItemModel(
+                                      itemname: _itemNameController.text,
+                                      itemprice: _itemPriceController.text,
+                                      image: value.imageUrl,
+                                      color: value.mycolor.value);
+                                  itemfirestoreService.addItems(newitem).then(
+                                      (value) => ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            duration: Duration(seconds: 2),
+                                            content: Text(
+                                              "item Uploaded Sucessfully!",
+                                              textAlign: TextAlign.center,
+                                            ),
                                            
-                                  //         )));
-                                  // } catch (e) {
-                                  //   rethrow;
-                                  // }
+                                          )));
+                                  } catch (e) {
+                                    rethrow;
+                                  }
                                   
                                 },
                                 child: Text("Add Item to Store"),

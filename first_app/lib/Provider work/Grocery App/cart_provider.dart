@@ -14,7 +14,7 @@ class CartProvider with ChangeNotifier {
   //firestore
   final ItemFirestoreService itemfirestoreService = ItemFirestoreService();
 
-  //stream
+ 
  CartProvider(){
   getData();
  }
@@ -22,15 +22,19 @@ class CartProvider with ChangeNotifier {
  getData(){
 
 // ignore: unused_local_variable
-StreamSubscription<List<ItemModel>> streamSubscription =
+StreamSubscription<List<ItemModel>>? streamSubscription =
       ItemFirestoreService().getItems().listen((snapshot) {
 
+        print("from getdata stream");
         List<ItemModel> list = [];
     for (var element in snapshot) {
         
       list.add(element);
     }
     _shopItems = list;
+    print("shopitem length");
+    print(_shopItems.toString());
+    notifyListeners();
   });
  }
   
@@ -50,7 +54,7 @@ StreamSubscription<List<ItemModel>> streamSubscription =
   //   });
   // }
 
-  var _shopItems = <ItemModel>[];
+  List<ItemModel> _shopItems = <ItemModel>[];
   // ["Avacado", "100", "assets/images/avocado.png", Colors.green],
   //   ["Banana", "120", "assets/images/banana.png", Colors.yellow],
   //   ["Chicken", "540", "assets/images/chicken.png", Colors.brown],
@@ -59,10 +63,10 @@ StreamSubscription<List<ItemModel>> streamSubscription =
   //   ["Snacks", "50", "assets/images/snacks.png", Colors.red],
   //   ["Cookie", "50", "assets/images/cookie.png", Colors.brown],
 
-  get shopItems => _shopItems;
+  List<ItemModel> get shopItems => _shopItems;
 
 // list for cart page
-  List itemList = [];
+  List<ItemModel> itemList = [];
 
   addtoList(Index) {
     itemList.add(shopItems[Index]);
@@ -78,7 +82,7 @@ StreamSubscription<List<ItemModel>> streamSubscription =
   String calculateTotal() {
     double totalPrice = 0;
     for (int i = 0; i < itemList.length; i++) {
-      totalPrice += double.parse(itemList[i][1]);
+      totalPrice += double.parse(itemList[i].itemprice);
     }
     return totalPrice.toString();
   }
@@ -128,7 +132,7 @@ StreamSubscription<List<ItemModel>> streamSubscription =
                 onColorChanged: (Color color) {
                   mycolor = color;
                   notifyListeners();
-                  //print("color : " + mycolor.toString());
+                  print(mycolor.value);
                 },
               ),
             ),
@@ -144,4 +148,6 @@ StreamSubscription<List<ItemModel>> streamSubscription =
         });
     return mycolor;
   }
+
+   
 }

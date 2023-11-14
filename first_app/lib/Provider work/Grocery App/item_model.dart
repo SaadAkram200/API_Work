@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class ItemModel{
 
-//late String id;
-  late String itemname, itemprice; 
-  String? image;
-  int? color;
+
+  late String itemname, itemprice, image; 
+  
+  late int color;
+
   ItemModel({
     required this.itemname,
     required this.itemprice,

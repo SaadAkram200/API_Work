@@ -1,3 +1,4 @@
+import 'package:first_app/Provider%20work/Grocery%20App/colors.dart';
 import 'package:flutter/material.dart';
 
 class BackgroundImage extends StatelessWidget {
@@ -179,7 +180,7 @@ class GroceryItemTile extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: color[100],
+          color:getMaterialColor(Color(color)).shade100 ,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -203,7 +204,7 @@ class GroceryItemTile extends StatelessWidget {
             onPressed: onPressed,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            color: color[800],
+            color: getMaterialColor(Color(color)).shade500,
             child: Text(
               'Rs.' + itemPrice,
               style: TextStyle(
@@ -217,3 +218,5 @@ class GroceryItemTile extends StatelessWidget {
     );
   }
 }
+
+
