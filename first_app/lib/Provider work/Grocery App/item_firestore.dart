@@ -11,4 +11,12 @@ class ItemFirestoreService {
   }
 
   // get item list
+  Stream<List<ItemModel>> getItems() {
+    return FirebaseFirestore.instance.collection('items').snapshots().map((querySnapshot) {
+      return querySnapshot.docs.map((document) {
+        final data = document.data();
+        return ItemModel.fromMap(data);
+      }).toList();
+    });
+  }
 }

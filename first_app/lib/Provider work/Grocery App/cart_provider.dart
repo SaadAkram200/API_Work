@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebasestorage;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:first_app/Provider%20work/Grocery%20App/item_firestore.dart';
+import 'package:first_app/Provider%20work/Grocery%20App/item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -8,15 +11,53 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 
 class CartProvider with ChangeNotifier {
-  final _shopItems = [
-    ["Avacado", "100", "assets/images/avocado.png", Colors.green],
-    ["Banana", "120", "assets/images/banana.png", Colors.yellow],
-    ["Chicken", "540", "assets/images/chicken.png", Colors.brown],
-    ["Water", "60", "assets/images/water.png", Colors.blue],
-    ["Orange", "240", "assets/images/orange.png", Colors.orange],
-    ["Snacks", "50", "assets/images/snacks.png", Colors.red],
-    ["Cookie", "50", "assets/images/cookie.png", Colors.brown],
-  ];
+  //firestore
+  final ItemFirestoreService itemfirestoreService = ItemFirestoreService();
+
+  //stream
+ CartProvider(){
+  getData();
+ }
+
+ getData(){
+
+// ignore: unused_local_variable
+StreamSubscription<List<ItemModel>> streamSubscription =
+      ItemFirestoreService().getItems().listen((snapshot) {
+
+        List<ItemModel> list = [];
+    for (var element in snapshot) {
+        
+      list.add(element);
+    }
+    _shopItems = list;
+  });
+ }
+  
+
+  //get item list from firestore
+  // createShopItem() {
+  //   streamSubscription = itemfirestoreService.getItems().listen((snapshot) {
+  //     for (var element in snapshot) {
+  //       var shopItems = [
+  //         element.itemname,
+  //         element.itemprice,
+  //         element.image,
+  //         element.color
+  //       ];
+  //       print(shopItems);
+  //     }
+  //   });
+  // }
+
+  var _shopItems = <ItemModel>[];
+  // ["Avacado", "100", "assets/images/avocado.png", Colors.green],
+  //   ["Banana", "120", "assets/images/banana.png", Colors.yellow],
+  //   ["Chicken", "540", "assets/images/chicken.png", Colors.brown],
+  //   ["Water", "60", "assets/images/water.png", Colors.blue],
+  //   ["Orange", "240", "assets/images/orange.png", Colors.orange],
+  //   ["Snacks", "50", "assets/images/snacks.png", Colors.red],
+  //   ["Cookie", "50", "assets/images/cookie.png", Colors.brown],
 
   get shopItems => _shopItems;
 
@@ -73,7 +114,7 @@ class CartProvider with ChangeNotifier {
   }
 
   //color picker
-  late Color mycolor = Colors.blue.shade200; 
+  late Color mycolor = Colors.blue.shade200;
 
   colorPicker(context) {
     showDialog(
@@ -85,9 +126,9 @@ class CartProvider with ChangeNotifier {
               child: BlockPicker(
                 pickerColor: mycolor,
                 onColorChanged: (Color color) {
-                    mycolor = color;
-                    notifyListeners();
-                    //print("color : " + mycolor.toString());
+                  mycolor = color;
+                  notifyListeners();
+                  //print("color : " + mycolor.toString());
                 },
               ),
             ),
@@ -101,6 +142,6 @@ class CartProvider with ChangeNotifier {
             ],
           );
         });
-        return mycolor;
+    return mycolor;
   }
 }

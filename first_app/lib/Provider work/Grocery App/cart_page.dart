@@ -51,7 +51,7 @@ class CartPage extends StatelessWidget {
                           ],
                         ),
                         child: ListTile(
-                          leading: Image.asset(value.itemList[index][2]),
+                          leading: Image.network(value.itemList[index][2]),
                           title: Text(
                             value.itemList[index][0],
                             style: TextStyle(fontWeight: FontWeight.bold),

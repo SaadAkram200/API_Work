@@ -191,7 +191,7 @@ class GroceryItemTile extends StatelessWidget {
         ),
         child:
             Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Image.asset(
+          Image.network(
             itemPath,
             height: 80,
           ),
