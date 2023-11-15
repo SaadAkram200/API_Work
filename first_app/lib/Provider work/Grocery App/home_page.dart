@@ -110,7 +110,7 @@ class HomePage extends StatelessWidget {
                       onPressed: () {
 
                         value.addtoList(index);
-                        print(value.itemList);
+                        
 
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: Duration(seconds: 2),

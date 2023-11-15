@@ -25,15 +25,13 @@ class CartProvider with ChangeNotifier {
 StreamSubscription<List<ItemModel>>? streamSubscription =
       ItemFirestoreService().getItems().listen((snapshot) {
 
-        print("from getdata stream");
+       
         List<ItemModel> list = [];
     for (var element in snapshot) {
         
       list.add(element);
     }
     _shopItems = list;
-    print("shopitem length");
-    print(_shopItems.toString());
     notifyListeners();
   });
  }

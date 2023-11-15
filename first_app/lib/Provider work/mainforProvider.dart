@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:first_app/Provider%20work/Grocery%20App/cart_provider.dart';
 import 'package:first_app/Provider%20work/Grocery%20App/intro_page.dart';
+// ignore: unused_import
 import 'package:first_app/Provider%20work/Practice/practice.dart';
 import 'package:first_app/Provider%20work/Practice/practice_provider.dart';
 import 'package:first_app/firebase_options.dart';
