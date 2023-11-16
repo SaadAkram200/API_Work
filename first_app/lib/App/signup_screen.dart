@@ -279,7 +279,7 @@ final FirestoreServices firestoreServices = FirestoreServices();
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 signInScreen())),
-                                )
+                                ),
                               ]),
                         ),
                       ),
